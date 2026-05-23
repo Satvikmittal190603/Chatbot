@@ -3,8 +3,9 @@ from src.langgraphagenticai.state.state import state
 from src.langgraphagenticai.nodes.basicChatbotNode import basicChatbotNode
 
 class GraphBuilder:
-    def __init__(self,model):
+    def __init__(self,model,checkpointer):
         self.llm = model
+        self.checkpointer = checkpointer
         self.graph_builder = StateGraph(state)
 
     def basic_chatbot_build_graph(self):
@@ -15,7 +16,7 @@ class GraphBuilder:
         self.graph_builder.add_edge(START,"chatBot")
         self.graph_builder.add_edge("chatBot",END)
 
-        return self.graph_builder.compile()
+        return self.graph_builder.compile(checkpointer=self.checkpointer)
 
 
     def set_use_case(self,usecase):
