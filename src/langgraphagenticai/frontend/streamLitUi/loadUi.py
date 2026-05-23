@@ -34,4 +34,10 @@ class LoadUi:
                 self.uiConfig.get_usecase_options()
             )
 
+            if self.userControls['usecase'] == "Chatbot with Tools":
+                self.userControls['TAVILY_API_KEY'] = st.session_state['TAVILY_API_KEY'] = st.text_input(
+                    "Enter your Tavily API key",
+                    type="password"
+                )
+
         return self.userControls 
