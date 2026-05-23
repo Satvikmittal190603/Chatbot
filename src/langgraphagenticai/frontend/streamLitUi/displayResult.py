@@ -1,0 +1,43 @@
+import json
+import streamlit as st
+
+class DisplayResultStreamlit:
+    def __init__(self,usecase,graph,user_message,config):
+        self.usecase = usecase
+        self.graph = graph
+        self.user_message = user_message
+        self.config = config or {"configurable": {"thread_id": "default-thread"}}
+
+    def display_result(self):
+        if self.usecase == "Basic Chatbot":
+            # Display conversation history
+            try:
+                state_snapshot = self.graph.get_state(self.config)
+                history = state_snapshot.values.get("messages", [])
+                for msg in history:
+                    role = "user" if msg.type == "human" else "assistant"
+                    with st.chat_message(role):
+                        st.write(msg.content)
+            except Exception as e:
+                print(f"Error fetching history: {e}")
+
+            # Display the current user message
+            with st.chat_message("user"):
+                st.write(self.user_message)
+
+            # Stream response using the checkpointer config
+            for event in self.graph.stream(
+                {"messages": [{"role": "user", "content": self.user_message}]},
+                config=self.config
+            ):
+                print(event.values())
+                for value in event.values():
+                    messages = value.get('messages')
+                    if messages:
+                        with st.chat_message("assistant"):
+                            if isinstance(messages, list):
+                                st.write(messages[-1].content)
+                            elif hasattr(messages, 'content'):
+                                st.write(messages.content)
+                            else:
+                                st.write(str(messages))

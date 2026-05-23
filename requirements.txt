@@ -6,5 +6,5 @@ langchain-core
 faiss-cpu
 streamlit
 tavily-python
-langchain-groq
+langchain_groq
 configparser
