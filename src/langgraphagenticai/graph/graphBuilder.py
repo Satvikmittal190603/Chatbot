@@ -19,7 +19,7 @@ class GraphBuilder:
 
 
     def set_use_case(self,usecase):
-        if usecase == "basic_chatbot":
+        if usecase == "Basic Chatbot":
             return self.basic_chatbot_build_graph()
         else:
             raise ValueError("Invalid use case")
