@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 from src.langgraphagenticai.frontend.streamLitUi.loadUi import LoadUi
 from src.langgraphagenticai.llms.groqLLM import GroqLLM
 from src.langgraphagenticai.graph.graphBuilder import GraphBuilder
@@ -21,6 +22,10 @@ def load_langgrap_Agentic_api():
     if not userControls:
         st.error("Please select the option in the sidebar")
         return 
+
+    if userControls.get("TAVILY_API_KEY"):
+        
+        os.environ["TAVILY_API_KEY"] = userControls["TAVILY_API_KEY"]
 
     user_message = st.chat_input("Enter your message")
 
