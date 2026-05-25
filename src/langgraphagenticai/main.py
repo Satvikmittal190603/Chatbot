@@ -27,7 +27,11 @@ def load_langgrap_Agentic_api():
         
         os.environ["TAVILY_API_KEY"] = userControls["TAVILY_API_KEY"]
 
-    user_message = st.chat_input("Enter your message")
+    if st.session_state.get("isFetchButtonClicked"):
+        user_message = st.session_state.time_frame
+        st.session_state.isFetchButtonClicked = False
+    else:
+        user_message = st.chat_input("Enter your message")
 
     if user_message:
         try:

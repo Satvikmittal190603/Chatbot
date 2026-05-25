@@ -9,6 +9,10 @@ class LoadUi:
 
     def load_ui(self):
         st.title(self.uiConfig.get_page_title())
+        if "isFetchButtonClicked" not in st.session_state:
+            st.session_state.isFetchButtonClicked = False
+        if "time_frame" not in st.session_state:
+            st.session_state.time_frame = ''
         st.sidebar.title("Configuration")
 
         ## LLM selection
@@ -34,10 +38,24 @@ class LoadUi:
                 self.uiConfig.get_usecase_options()
             )
 
-            if self.userControls['usecase'] == "Chatbot with Tools":
+            if self.userControls['usecase'] == "Chatbot with Tools" or self.userControls['usecase'] == "AI News":
                 self.userControls['TAVILY_API_KEY'] = st.session_state['TAVILY_API_KEY'] = st.text_input(
                     "Enter your Tavily API key",
                     type="password"
                 )
+            
+            if self.userControls['usecase'] == "AI News":
+                st.subheader("AI News Explorer")
+                
+                time_frame = st.selectbox(
+                    "Choose your Time Frame",
+                    ["Daily","Weekly","Monthly"],
+                    index=0
+                )
+                
+                if st.button("fetch latest AI News", use_container_width=True):
+                    st.session_state.isFetchButtonClicked=True
+                    st.session_state.time_frame = time_frame
 
         return self.userControls 
+
