@@ -87,3 +87,21 @@ class DisplayResultStreamlit:
                                     st.write("Tool Call start")
                                     st.write(msg.content)
                                     st.write("Tool Call end")
+
+        elif self.usecase == "AI News":
+            with st.chat_message("user"):
+                st.write(self.user_message)
+            
+            with st.spinner("Fetching and summarizing latest AI News..."):
+                res = self.graph.invoke(
+                    {"messages": [{"role": "user", "content": self.user_message}]},
+                    config=self.config
+                )
+            
+            summary = res.get("summary")
+            filename = res.get("filename")
+            if summary:
+                with st.chat_message("assistant"):
+                    st.write(summary)
+                    if filename:
+                        st.info(f"Summary saved to `{filename}`")
