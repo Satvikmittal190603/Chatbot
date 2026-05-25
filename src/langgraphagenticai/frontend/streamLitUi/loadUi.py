@@ -39,5 +39,19 @@ class LoadUi:
                     "Enter your Tavily API key",
                     type="password"
                 )
+            
+            if self.userControls['usecase'] == "AI News":
+                st.subheader("AI News Explorer")
+                
+                time_frame = st.selectbox(
+                    "Choose your Time Frame",
+                    ["Daily","Weekly","Monthly"],
+                    index=0
+                )
+
+                if st.button("fetch latest AI News", use_container_width=True):
+                    st.session_state.isFetchButtonClicked=True
+                    st.session_state.time_frame = time_frame
 
         return self.userControls 
+
